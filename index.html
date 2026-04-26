@@ -90,7 +90,7 @@ body {
   pointer-events: none;
 }
 .layer-title { top: 2%;  width: 85%; z-index: 20; }
-.layer-clip  { top: 10%; width: 25%; z-index: 40; }
+.layer-clip  { top: 15%; width: 25%; z-index: 40; }
 .layer-frame { top: 18%; width: 85%; z-index: 10; }
 
 /* 셔터 버튼 */
@@ -107,7 +107,7 @@ body {
 .slots-wrap {
   position: absolute;
   top: 38%; left: 24%;
-  width: 52%; height: 42%;
+  width: 42%; height: 32%;
   z-index: 20;
   display: flex; flex-direction: column; gap: 6px;
 }
@@ -347,7 +347,7 @@ body {
       </div>
 
       <!-- ✅ 셔터 버튼 이미지: src 채우기 -->
-      <div style="position:absolute; bottom:1.5%; left:50%; transform:translateX(-50%); z-index:30; cursor:pointer; text-align:center;" onclick="shoot()">
+      <div style="position:absolute; bottom:2%; left:50%; transform:translateX(-50%); z-index:30; cursor:pointer; text-align:center;" onclick="shoot()">
         <img src="img/heart.png" alt="셔터" style="width:60px; display:block; transition:transform 0.1s;" ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform='scale(1)'">
       </div>
 
