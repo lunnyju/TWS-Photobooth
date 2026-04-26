@@ -240,6 +240,7 @@ body {
 }
 #s2-booth { animation: screenIn 0.6s ease both; }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>  
 </head>
 <body>
 
@@ -463,62 +464,12 @@ function goToBooth() {
   startCam();
 }
 function savePhoto() {
-  var card = document.querySelector('.result-card');
-  var w = card.offsetWidth;
-  var h = card.offsetHeight;
-  var canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  var ctx = canvas.getContext('2d');
-
-  var layers = [
-    'img/background.png',
-    'img/frame.png',
-    'img/notragedy.png',
-    'img/pin.png'
-  ];
-
-  // 레이어 순서대로 그리기
-  function drawLayers(list, done) {
-    if(list.length === 0){ done(); return; }
-    var img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = function(){
-      ctx.drawImage(img, 0, 0, w, h);
-      drawLayers(list.slice(1), done);
-    };
-    img.src = list[0];
-  }
-
-  drawLayers(layers, function(){
-    // 사진 슬롯 위치 계산
-    var slots = document.querySelector('.result-slots');
-    var sx = slots.offsetLeft;
-    var sy = slots.offsetTop;
-    var sw = slots.offsetWidth;
-    var sh = slots.offsetHeight / slotCount;
-    var gap = 13;
-
-    var drawn = 0;
-    for(var i = 0; i < slotCount; i++){
-      (function(idx){
-        var rp = document.getElementById('rp' + idx);
-        var img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = function(){
-          var y = sy + idx * (sh + gap * (h / 100));
-          ctx.drawImage(img, sx, y, sw, sh - gap);
-          drawn++;
-          if(drawn === slotCount){
-            var a = document.createElement('a');
-            a.download = 'TWS_photobooth.jpg';
-            a.href = canvas.toDataURL('image/jpeg', 0.92);
-            a.click();
-          }
-        };
-        img.src = rp.src;
-      })(i);
-    }
+  var card = document.querySelector('#s3-result .result-card');
+  html2canvas(card, { useCORS: true, allowTaint: true }).then(function(canvas) {
+    var a = document.createElement('a');
+    a.download = 'TWS_photobooth.jpg';
+    a.href = canvas.toDataURL('image/jpeg', 0.92);
+    a.click();
   });
 }
 
