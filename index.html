@@ -140,27 +140,25 @@ body {
   font-size: 42px; color: #fff;
   animation: countPop 0.4s ease;
 }
-
-/* 현상하기 버튼 */
-.develop-btn {
-  position: absolute; bottom: 0.2%; left: 50%;
+/*양옆버튼들*/
+.side-btns {
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
   transform: translateX(-50%);
-  padding: 4px 16px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.25);
-  font-family: 'Special Elite', serif;
-  font-size: 9px; letter-spacing: 1.5px;
-  cursor: not-allowed; border-radius: 10px;
-  white-space: nowrap; z-index: 25;
-  transition: all 0.2s; -webkit-appearance: none;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 30;
 }
-.develop-btn.on {
-  background: rgba(255,255,255,0.28);
-  border-color: rgba(255,255,255,0.65);
-  color: #fff; cursor: pointer;
+.side-btn {
+  width: 28%;
+  cursor: pointer;
+  transition: transform 0.1s;
 }
-.develop-btn.on:active { transform: translateX(-50%) scale(0.96); }
+.side-btn:active { transform: scale(0.92); }
+
 
 /* --------------------------------
    3단계: 현상 결과
@@ -345,13 +343,15 @@ body {
           </div>
         </div>
       </div>
-
-      <!-- ✅ 셔터 버튼 이미지: src 채우기 -->
-      <div style="position:absolute; bottom:2%; left:50%; transform:translateX(-50%); z-index:30; cursor:pointer; text-align:center;" onclick="shoot()">
-        <img src="img/heart.png" alt="셔터" style="width:60px; display:block; transition:transform 0.1s;" ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform='scale(1)'">
+      <div class="side-btns">
+        <img class="side-btn" src="img/AGAIN.png" alt="again" onclick="goToBooth()">
+        <div style="cursor:pointer;" onclick="shoot()">
+          <img src="img/heart.png" alt="셔터" style="width:60px; transition:transform 0.1s;" ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform='scale(1)'">
+        </div>
+        <img class="side-btn" src="img/PRINT.png" alt="print" onclick="goToResult()">
       </div>
 
-      <button class="develop-btn" id="developBtn" onclick="goToResult()">PRINT IT</button>
+      
     </div>
   </div>
 </div>
