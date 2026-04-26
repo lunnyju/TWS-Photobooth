@@ -176,10 +176,10 @@ body {
 }
 .result-slots {
   position: absolute;
-  top: 33%; left: 29%;
-  width: 42%; height: 42%;
+  top: 33%; left: 35%;
+  width: 30%; height: 40%;
   z-index: 20;
-  display: flex; flex-direction: column; gap: 12px;
+  display: flex; flex-direction: column; gap: 13px;
 }
 .result-photo {
   flex: 1; width: 100%;
@@ -463,31 +463,55 @@ function goToBooth() {
   startCam();
 }
 function savePhoto() {
-  var canvas = document.createElement('canvas');
   var card = document.querySelector('.result-card');
-  canvas.width = card.offsetWidth;
-  canvas.height = card.offsetHeight;
+  var w = card.offsetWidth;
+  var h = card.offsetHeight;
+  var canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
   var ctx = canvas.getContext('2d');
 
-  var bg = new Image();
-  bg.src = 'img/background.png';
-  bg.onload = function() {
-    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+  var layers = [
+    'img/background.png',
+    'img/frame.png',
+    'img/notragedy.png',
+    'img/pin.png'
+  ];
+
+  // 레이어 순서대로 그리기
+  function drawLayers(list, done) {
+    if(list.length === 0){ done(); return; }
+    var img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function(){
+      ctx.drawImage(img, 0, 0, w, h);
+      drawLayers(list.slice(1), done);
+    };
+    img.src = list[0];
+  }
+
+  drawLayers(layers, function(){
+    // 사진 슬롯 위치 계산
+    var slots = document.querySelector('.result-slots');
+    var sx = slots.offsetLeft;
+    var sy = slots.offsetTop;
+    var sw = slots.offsetWidth;
+    var sh = slots.offsetHeight / slotCount;
+    var gap = 13;
+
     var drawn = 0;
     for(var i = 0; i < slotCount; i++){
       (function(idx){
         var rp = document.getElementById('rp' + idx);
         var img = new Image();
+        img.crossOrigin = 'anonymous';
         img.onload = function(){
-          var slots = document.querySelector('.result-slots');
-          var slot = slots.children[idx];
-          var sx = slot.offsetLeft + slots.offsetLeft;
-          var sy = slot.offsetTop + slots.offsetTop;
-          ctx.drawImage(img, sx, sy, slot.offsetWidth, slot.offsetHeight);
+          var y = sy + idx * (sh + gap * (h / 100));
+          ctx.drawImage(img, sx, y, sw, sh - gap);
           drawn++;
           if(drawn === slotCount){
             var a = document.createElement('a');
-            a.download = 'photobooth.jpg';
+            a.download = 'TWS_photobooth.jpg';
             a.href = canvas.toDataURL('image/jpeg', 0.92);
             a.click();
           }
@@ -495,7 +519,7 @@ function savePhoto() {
         img.src = rp.src;
       })(i);
     }
-  };
+  });
 }
 
 function flash() {
