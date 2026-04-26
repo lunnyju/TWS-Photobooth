@@ -163,101 +163,46 @@ body {
 /* --------------------------------
    3단계: 현상 결과
 -------------------------------- */
-#s3-result {
-  flex-direction: column;
-  gap: 0;
-}
+#s3-result { align-items: center; justify-content: center; }
 
-/* 프린터 머신 상단 */
-.printer-machine {
-  width: min(340px, 95vw);
-  background: linear-gradient(180deg, #c8c8d8 0%, #a0a0b8 100%);
-  border-radius: 8px 8px 0 0;
-  padding: 10px 16px 8px;
-  display: flex; align-items: center; justify-content: space-between;
-  border: 1.5px solid #888;
-  border-bottom: none;
-  z-index: 10;
-  animation: fadeIn 0.5s ease both;
-}
-.printer-label { font-family:'Special Elite',serif; font-size:9px; color:#555; letter-spacing:2px; }
-.printer-dots  { display:flex; gap:5px; }
-.p-dot { width:8px; height:8px; border-radius:50%; background:#888; }
-.p-dot.on { background:#5a8a5a; box-shadow:0 0 4px rgba(90,138,90,0.6); }
-
-/* 프린터 슬롯 */
-.printer-slot {
-  width: min(340px, 95vw);
-  height: 18px;
-  background: linear-gradient(180deg, #666 0%, #444 100%);
-  border-left: 1.5px solid #888;
-  border-right: 1.5px solid #888;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden; z-index: 10;
-}
-.printer-slot-inner { width:85%; height:6px; background:#222; border-radius:3px; }
-
-/* 결과 카드 */
-.result-card-wrap {
-  width: min(340px, 95vw);
-  overflow: hidden;
-  position: relative;
-}
 .result-card {
   position: relative;
-  width: 100%;
+  width: min(340px, 95vw);
   height: min(523px, calc(95vw * 523 / 340));
-  /* ✅ 결과 화면 배경 프레임 */
-  background-image: url('img/frame.png');
-  background-size: cover; background-position: center;
-  animation: printSlide 1.2s cubic-bezier(0.22,1,0.36,1) 0.3s both;
+  background-image: url('img/background.png');
+  background-size: cover;
+  background-position: center;
 }
-
-/* 결과 슬롯 (찍힌 사진 3개) */
 .result-slots {
   position: absolute;
-  top: 38%; left: 35%;
-  width: 30%; height: 35%;
+  top: 33%; left: 29%;
+  width: 42%; height: 42%;
   z-index: 20;
-  display: flex; flex-direction: column; gap: 6px;
+  display: flex; flex-direction: column; gap: 12px;
 }
 .result-photo {
-  flex: 1;
-  width: 100%;
+  flex: 1; width: 100%;
   object-fit: cover;
   border-radius: 3px;
   opacity: 0;
 }
 .result-photo.show { animation: showP 0.4s ease forwards; }
-
-/* 하단 버튼 */
-.result-actions {
-  width: min(340px, 95vw);
-  background: rgba(180,195,220,0.3);
-  border: 1px solid rgba(120,150,200,0.3);
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  display: flex; gap: 8px;
-  padding: 10px 12px;
-  animation: fadeIn 0.5s ease 1.8s both;
-  opacity: 0;
+.result-btns {
+  position: absolute;
+  bottom: 3%; left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 30;
 }
-.res-btn {
-  flex: 1; padding: 8px 0;
-  background: rgba(200,215,240,0.6);
-  border: 1px solid rgba(120,150,210,0.4);
-  color: rgba(40,60,130,0.8);
-  font-family: 'Special Elite', serif; font-size: 11px;
-  cursor: pointer; border-radius: 14px;
-  transition: all 0.15s;
-  -webkit-appearance: none; text-align: center;
+.result-btn {
+  width: 30%;
+  cursor: pointer;
+  transition: transform 0.1s;
 }
-.res-btn:active { transform: scale(0.96); }
-.res-btn.primary {
-  background: rgba(230,175,195,0.6);
-  border-color: rgba(190,120,150,0.4);
-  color: rgba(100,30,70,0.85);
-}
+.result-btn:active { transform: scale(0.92); }
 
 /* --------------------------------
    애니메이션
@@ -358,28 +303,21 @@ body {
 
 <!-- 3단계: 현상 결과 -->
 <div id="s3-result" class="screen">
-  <div class="printer-machine">
-    <span class="printer-label">PRINTING...</span>
-    <div class="printer-dots">
-      <div class="p-dot"></div>
-      <div class="p-dot"></div>
-      <div class="p-dot on"></div>
-    </div>
-  </div>
-  <div class="printer-slot"><div class="printer-slot-inner"></div></div>
-  <div class="result-card-wrap">
+  <div style="position:relative;">
     <div class="result-card">
-      <!-- 찍힌 사진 3개 -->
+      <img class="layer layer-title" src="img/notragedy.png" alt="no tragedy">
+      <img class="layer layer-clip"  src="img/pin.png" alt="핀">
+      <img class="layer layer-frame" src="img/frame.png" alt="레이스 액자">
       <div class="result-slots">
         <img class="result-photo" id="rp0" src="" alt="">
         <img class="result-photo" id="rp1" src="" alt="">
         <img class="result-photo" id="rp2" src="" alt="">
       </div>
+      <div class="result-btns">
+        <img class="result-btn" src="img/AGAIN.png" alt="again" onclick="goToBooth()">
+        <img class="result-btn" src="img/SAVE.png" alt="save" onclick="savePhoto()">
+      </div>
     </div>
-  </div>
-  <div class="result-actions">
-    <button class="res-btn" onclick="goToBooth()">RETAKE</button>
-    <button class="res-btn primary" onclick="savePhoto()">SAVE</button>
   </div>
 </div>
 
@@ -524,10 +462,39 @@ function goToBooth() {
   startCam();
 }
 function savePhoto() {
-  var ua = navigator.userAgent;
-  if(/iPad|iPhone|iPod/.test(ua))   alert('전원 + 볼륨업 동시에 눌러 저장하세요!');
-  else if(/Android/.test(ua))       alert('전원 + 볼륨다운 동시에 눌러 저장하세요!');
-  else                               alert('스크린샷 또는 Ctrl+P로 저장해 주세요!');
+  var canvas = document.createElement('canvas');
+  var card = document.querySelector('.result-card');
+  canvas.width = card.offsetWidth;
+  canvas.height = card.offsetHeight;
+  var ctx = canvas.getContext('2d');
+
+  var bg = new Image();
+  bg.src = 'img/background.png';
+  bg.onload = function() {
+    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+    var drawn = 0;
+    for(var i = 0; i < slotCount; i++){
+      (function(idx){
+        var rp = document.getElementById('rp' + idx);
+        var img = new Image();
+        img.onload = function(){
+          var slots = document.querySelector('.result-slots');
+          var slot = slots.children[idx];
+          var sx = slot.offsetLeft + slots.offsetLeft;
+          var sy = slot.offsetTop + slots.offsetTop;
+          ctx.drawImage(img, sx, sy, slot.offsetWidth, slot.offsetHeight);
+          drawn++;
+          if(drawn === slotCount){
+            var a = document.createElement('a');
+            a.download = 'photobooth.jpg';
+            a.href = canvas.toDataURL('image/jpeg', 0.92);
+            a.click();
+          }
+        };
+        img.src = rp.src;
+      })(i);
+    }
+  };
 }
 
 function flash() {
