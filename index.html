@@ -484,8 +484,8 @@ function snap(idx) {
   document.getElementById('slot' + idx).classList.add('captured');
   shotCount++;
   flash();
-  if(shotCount >= slotCount)
-    document.getElementById('developBtn').classList.add('on');
+  var next = findEmpty();
+  if(next !== -1) attachCam(next);
 }
 
 function goToResult() {
@@ -519,8 +519,8 @@ function goToBooth() {
     if(rp){ rp.src = ''; rp.classList.remove('show'); }
   }
   document.getElementById('slot0').classList.add('active');
-  document.getElementById('developBtn').classList.remove('on');
   showScreen('s2-booth');
+  if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream = null; }
   startCam();
 }
 function savePhoto() {
