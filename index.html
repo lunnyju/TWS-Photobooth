@@ -255,7 +255,6 @@ body {
 }
 #s2-booth { animation: screenIn 0.6s ease both; }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>  
 </head>
 <body>
 
@@ -340,7 +339,6 @@ body {
       </div>
       <div class="result-btns">
         <img class="result-btn" src="img/AGAIN.png" alt="again" onclick="goToBooth()">
-        <img class="result-btn" src="img/SAVE.png" alt="save" onclick="savePhoto()">
       </div>
     </div>
   </div>
@@ -521,20 +519,9 @@ function showDeco() {
       document.getElementById(id).classList.add('show');
     }, i * 100);
   });
-  // 하트 숨기고 SAVE로 교체
+  // 하트 숨기기
   document.getElementById('heartBtn').style.display = 'none';
   document.getElementById('printBtn').src = 'img/SAVE.png';
-  document.getElementById('printBtn').onclick = savePhoto;
-}
-
-function savePhoto() {
-  var card = document.querySelector('#s2-booth .card');
-  html2canvas(card, { useCORS: true, allowTaint: true }).then(function(canvas){
-    var a = document.createElement('a');
-    a.download = 'TWS_photobooth.jpg';
-    a.href = canvas.toDataURL('image/jpeg', 0.92);
-    a.click();
-  });
 }
 
 function flash() {
