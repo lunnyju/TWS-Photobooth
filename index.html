@@ -441,15 +441,14 @@ function snap(idx) {
   ctx.translate(cvs.width, 0);
   ctx.scale(-1, 1);
   ctx.drawImage(vid, 0, 0);
-  
-  // canvas를 img로 변환해서 슬롯에 넣기
+
+  // canvas를 img로 변환
   var dataUrl = cvs.toDataURL('image/jpeg', 0.92);
-  var img = document.createElement('img');
-  img.src = dataUrl;
-  img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block;';
+  var snapImg = document.createElement('img');
+  snapImg.src = dataUrl;
+  snapImg.style.cssText = 'position:absolute; inset:0; width:100%; height:100%; object-fit:cover;';
   var inner = document.getElementById('slot' + idx).querySelector('.wslot-inner');
-  inner.innerHTML = '';
-  inner.appendChild(img);
+  inner.appendChild(snapImg);  // innerHTML 안 지우고 그냥 위에 얹기
 
   vid.style.display = 'none';
   document.getElementById('slot' + idx).classList.remove('active');
@@ -458,7 +457,7 @@ function snap(idx) {
   flash();
   var next = findEmpty();
   if(next !== -1) attachCam(next);
-}r
+}
 
 function goToResult() {
   if(shotCount < slotCount) return;
