@@ -517,7 +517,8 @@ function showDeco() {
       document.getElementById(id).classList.add('show');
     }, i * 100);
   });
-  
+  // pin 숨기기
+  document.querySelector('.layer-clip').style.display = 'none';
   // 버튼 전체 숨기기
   document.querySelector('.side-btns').style.display = 'none';
 }
