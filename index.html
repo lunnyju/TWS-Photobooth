@@ -101,12 +101,12 @@ body {
 }
 .deco-layer.show { opacity: 1; }
 
-.deco-b1     { top: 15%; left: 5%;  width: 12%; z-index: 50; }
-.deco-b2     { top: 3%;  right: 5%; width: 10%; z-index: 50; }
-.deco-tape1  { top: 10%; left: 3%;  width: 18%; z-index: 45; }
-.deco-tape2  { bottom: 0%; left: 0%; width: 100%; z-index: 45; }
-.deco-stamp  { top: 18%; right: 2%; width: 14%; z-index: 50; }
-.deco-seal   { bottom: 12%; left: 8%; width: 20%; z-index: 50; }
+.deco-b1     { top: 28%; left: 2%;  width: 10%; z-index: 50; }
+.deco-b2     { top: 3%;  right: 2%; width: 8%; z-index: 50; }
+.deco-tape1  { top: 5%; left:0%;  width: 22%; z-index: 45; }
+.deco-tape2  { bottom: 8%; left: 0%; width: 60%; z-index: 45; }
+.deco-stamp  { top: 22%; right: 2%; width: 12%; z-index: 50; }
+.deco-seal   { bottom: 14%; left: 3%; width: 18%; z-index: 50; }
   
 /* 셔터 버튼 */
 .layer-btn {
@@ -486,6 +486,13 @@ function goToBooth() {
     document.getElementById('slot' + i).classList.remove('captured', 'active');
     var cvs = document.getElementById('cvs' + i);
     cvs.style.display = 'none'; cvs.width = 0;
+    // 슬롯 안에 추가된 snap 이미지 제거하고 원래 구조 복구
+    var inner = document.getElementById('slot' + i).querySelector('.wslot-inner');
+    var snapImgs = inner.querySelectorAll('img');
+    snapImgs.forEach(function(img){ img.remove(); });
+    var vid = document.getElementById('vid' + i);
+    vid.style.display = 'none';
+    vid.srcObject = null;
     var rp = document.getElementById('rp' + i);
     if(rp){ rp.src = ''; rp.classList.remove('show'); }
   }
