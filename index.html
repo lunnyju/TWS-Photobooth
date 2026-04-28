@@ -107,7 +107,7 @@ body {
 .deco-tape1 { top: 0%; left: 5%; width: 8%; height: 30%; z-index: 15; }
 .deco-tape2 { bottom: 8%; right: 0%; left: auto; width: 55%; z-index: 45; }
 .deco-stamp  { top: 20%; right: 10%; width: 18%; z-index: 50; }
-.deco-seal  { bottom: 14%; left: 15%; width: 18%; z-index: 50; }
+.deco-seal  { bottom: 14%; left: 12%; width: 20%; z-index: 50; }
   
 /* 셔터 버튼 */
 .layer-btn {
@@ -517,9 +517,9 @@ function showDeco() {
       document.getElementById(id).classList.add('show');
     }, i * 100);
   });
-  // 하트 숨기기
-  document.getElementById('heartBtn').style.display = 'none';
-  //document.getElementById('printBtn').src = 'img/SAVE.png';
+  
+  // 버튼 전체 숨기기
+  document.querySelector('.side-btns').style.display = 'none';
 }
 
 function flash() {
