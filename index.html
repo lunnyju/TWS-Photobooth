@@ -93,6 +93,21 @@ body {
 .layer-clip  { top: 15%; width: 25%; z-index: 40; }
 .layer-frame { top: 18%; width: 85%; z-index: 10; }
 
+.deco-layer {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.deco-layer.show { opacity: 1; }
+
+.deco-b1     { top: 15%; left: 5%;  width: 12%; z-index: 50; }
+.deco-b2     { top: 3%;  right: 5%; width: 10%; z-index: 50; }
+.deco-tape1  { top: 10%; left: 3%;  width: 18%; z-index: 45; }
+.deco-tape2  { bottom: 0%; left: 0%; width: 100%; z-index: 45; }
+.deco-stamp  { top: 18%; right: 2%; width: 14%; z-index: 50; }
+.deco-seal   { bottom: 12%; left: 8%; width: 20%; z-index: 50; }
+  
 /* 셔터 버튼 */
 .layer-btn {
   position: absolute; bottom: -2%; left: 50%;
@@ -274,7 +289,8 @@ body {
             <canvas class="wslot-canvas" id="cvs0"></canvas>
             <div class="countdown-overlay" id="cd0"><span class="countdown-num" id="cdNum0"></span></div>
           </div>
-        </div>
+        </div>  
+        
         <div class="webcam-slot" id="slot1">
           <div class="wslot-inner">
             <video  class="wslot-video"  id="vid1" autoplay playsinline muted></video>
@@ -290,14 +306,21 @@ body {
           </div>
         </div>
       </div>
+
+      <img class="deco-layer deco-b1"    id="deco-b1"    src="img/b1.png" alt="">
+      <img class="deco-layer deco-b2"    id="deco-b2"    src="img/b2.png" alt="">
+      <img class="deco-layer deco-tape1" id="deco-tape1" src="img/tape1.png" alt="">
+      <img class="deco-layer deco-tape2" id="deco-tape2" src="img/tape2.png" alt="">
+      <img class="deco-layer deco-stamp" id="deco-stamp" src="img/stamp.png" alt="">
+      <img class="deco-layer deco-seal"  id="deco-seal"  src="img/sealingwax.png" alt="">
+      
       <div class="side-btns">
         <img class="side-btn" src="img/AGAIN.png" alt="again" onclick="goToBooth()">
         <div style="cursor:pointer;" onclick="shoot()">
-          <img src="img/heart.png" alt="셔터" style="width:60px; transition:transform 0.1s;" ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform='scale(1)'">
+          <img src="img/heart.png" id="heartBtn" alt="셔터" style="width:60px; transition:transform 0.1s;" ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform='scale(1)'">
         </div>
-        <img class="side-btn" src="img/PRINT.png" alt="print" onclick="goToResult()">
+        <img class="side-btn" id="printBtn" src="img/PRINT.png" alt="print" onclick="showDeco()">
       </div>
-
       
     </div>
   </div>
@@ -418,15 +441,24 @@ function snap(idx) {
   ctx.translate(cvs.width, 0);
   ctx.scale(-1, 1);
   ctx.drawImage(vid, 0, 0);
+  
+  // canvas를 img로 변환해서 슬롯에 넣기
+  var dataUrl = cvs.toDataURL('image/jpeg', 0.92);
+  var img = document.createElement('img');
+  img.src = dataUrl;
+  img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block;';
+  var inner = document.getElementById('slot' + idx).querySelector('.wslot-inner');
+  inner.innerHTML = '';
+  inner.appendChild(img);
+
   vid.style.display = 'none';
-  cvs.style.display = 'block';
   document.getElementById('slot' + idx).classList.remove('active');
   document.getElementById('slot' + idx).classList.add('captured');
   shotCount++;
   flash();
   var next = findEmpty();
   if(next !== -1) attachCam(next);
-}
+}r
 
 function goToResult() {
   if(shotCount < slotCount) return;
@@ -458,14 +490,40 @@ function goToBooth() {
     var rp = document.getElementById('rp' + i);
     if(rp){ rp.src = ''; rp.classList.remove('show'); }
   }
+  // 데코 초기화
+  var decos = ['deco-b1','deco-b2','deco-tape1','deco-tape2','deco-stamp','deco-seal'];
+  decos.forEach(function(id){
+    document.getElementById(id).classList.remove('show');
+  });
+  // 하트/PRINT 버튼 복구
+  document.getElementById('heartBtn').style.display = 'block';
+  document.getElementById('printBtn').src = 'img/PRINT.png';
+  document.getElementById('printBtn').onclick = showDeco;
+
   document.getElementById('slot0').classList.add('active');
   showScreen('s2-booth');
   if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream = null; }
   startCam();
 }
+
+function showDeco() {
+  if(shotCount < slotCount) return;
+  // 데코 이미지 보이기
+  var decos = ['deco-b1','deco-b2','deco-tape1','deco-tape2','deco-stamp','deco-seal'];
+  decos.forEach(function(id, i){
+    setTimeout(function(){
+      document.getElementById(id).classList.add('show');
+    }, i * 100);
+  });
+  // 하트 숨기고 SAVE로 교체
+  document.getElementById('heartBtn').style.display = 'none';
+  document.getElementById('printBtn').src = 'img/SAVE.png';
+  document.getElementById('printBtn').onclick = savePhoto;
+}
+
 function savePhoto() {
-  var card = document.querySelector('#s3-result .result-card');
-  html2canvas(card, { useCORS: true, allowTaint: true }).then(function(canvas) {
+  var card = document.querySelector('#s2-booth .card');
+  html2canvas(card, { useCORS: true, allowTaint: true }).then(function(canvas){
     var a = document.createElement('a');
     a.download = 'TWS_photobooth.jpg';
     a.href = canvas.toDataURL('image/jpeg', 0.92);
