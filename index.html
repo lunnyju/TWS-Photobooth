@@ -45,7 +45,6 @@ body {
   position: relative;
   width: min(340px, 95vw);
   height: min(523px, calc(95vw * 523 / 340));
-  /* ✅ 배경 이미지 */
   background-image: url('img/background.png');
   background-size: cover;
   background-position: center;
@@ -77,7 +76,6 @@ body {
   position: relative;
   width: min(340px, 95vw);
   height: min(523px, calc(95vw * 523 / 340));
-  /* ✅ 포토부스 프레임 배경 */
   background-image: url('img/background.png');
   background-size: cover;
   background-position: center;
@@ -109,15 +107,6 @@ body {
 .deco-stamp  { top: 20%; right: 10%; width: 18%; z-index: 50; }
 .deco-seal  { bottom: 14%; left: 10%; width: 20%; z-index: 50; }
   
-/* 셔터 버튼 */
-.layer-btn {
-  position: absolute; bottom: -2%; left: 50%;
-  transform: translateX(-50%);
-  width: 13%; z-index: 20;
-  cursor: pointer; pointer-events: all;
-  transition: transform 0.1s; padding: 6px;
-}
-.layer-btn:active { transform: translateX(-50%) scale(0.92); }
 
 /* 웹캠 슬롯 3개 */
 .slots-wrap {
@@ -205,22 +194,6 @@ body {
   opacity: 0;
 }
 .result-photo.show { animation: showP 0.4s ease forwards; }
-.result-btns {
-  position: absolute;
-  bottom: 3%; left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 30;
-}
-.result-btn {
-  width: 30%;
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-.result-btn:active { transform: scale(0.92); }
 
 /* --------------------------------
    애니메이션
